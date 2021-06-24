@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RecyclerView in Android with Example</title>
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+</head>
+
+<body class="container">
+
+    <h1>RecyclerView in Android with Example</h1>
+
+    <section>
+
+        <div>
+
+            <p>
+                RecyclerView is a ViewGroup added to the android studio as a successor of the GridView and ListView. It
+                is an improvement on both of them and can be found in the latest v-7 support packages. It has been
+                created to make possible construction of any lists with <b>XML</b> layouts as an item which can be
+                customized
+                vastly while improving on the efficiency of ListViews and GridViews. This improvement is achieved by
+                recycling the views which are out of the visibility of the user. For example, if a user scrolled down to
+                a position where items 4 and 5 are visible; items 1, 2, and 3 would be cleared from the memory to reduce
+                memory consumption.
+
+            </p>
+
+            <p>
+                <b>Implementation:</b> To implement a basic RecyclerView three sub-parts are needed to be constructed
+                which
+                offer the users the degree of control they require in making varying designs of their choice.
+
+                <ol>
+                    <li>
+                        <b>The Card Layout:</b> The card layout is an XML layout which will be treated as an item for
+                        the list
+                        created by the RecyclerView.
+                    </li>
+
+                    <li>
+                        <b>ViewHolder:</b> The ViewHolder is a java class that stores the reference to the card layout
+                        views that have to be dynamically modified during the execution of the program by a list of data
+                        obtained either by online databases or added in some other way.
+                    </li>
+
+                    <li>
+                        <b>The ViewHolder:</b> The ViewHolder is a java class that stores the reference to the card
+                        layout
+                        views that have to be dynamically modified during the execution of the program by a list of data
+                        obtained either by online databases or added in some other way.
+                    </li>
+                </ol>
+            </p>
+
+        </div>
+
+        <div>
+
+            <p>Below is the implementation of the RecyclerView:</p>
+
+            <h4>activity_main.xml</h4>
+
+            <div>
+                <pre>
+                    <code>
+        &lt;?xml version="1.0" encoding="utf-8"?&gt;
+        &lt;androidx.constraintlayout.widget.ConstraintLayout 
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".MainActivity"&gt;
+                
+                &lt;androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" /&gt;
+                
+        &lt;/androidx.constraintlayout.widget.ConstraintLayout&gt;
+                    </code>
+                </pre>
+            </div>
+
+            <h4>recyclerview_item.xml</h4>
+
+            <div>
+                <pre>
+                    <code>
+        &lt;?xml version="1.0" encoding="utf-8"?&gt;
+        &lt;androidx.constraintlayout.widget.ConstraintLayout 
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"&gt;
+
+                &lt;androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="5dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"&gt;
+
+                        &lt;TextView
+                            android:id="@+id/tvTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="3dp"
+                            android:gravity="center"
+                            android:text="Shivtej"
+                            android:textSize="30sp" /&gt;
+
+                &lt;/androidx.cardview.widget.CardView&gt;
+
+            &lt;/androidx.constraintlayout.widget.ConstraintLayout&gt;
+                    </code>
+                </pre>
+            </div>
+
+            <p>
+                <b>The Adapter:</b> The adapter is the main code responsible for RecyclerView. It holds all the
+                important
+                methods dealing with the implementation of RecylcerView. The basic methods for a successful
+                implementation are:
+
+                <ul>
+
+                    <li> <em>onCreateViewHolder:</em> which deals with the inflation of the card layout as an item for
+                        the RecyclerView.</li>
+
+                    <li> <em>onBindViewHolder:</em> which deals with the setting of different data and methods related
+                        to clicks on particular items of the RecyclerView.</li>
+
+                    <li> <em>getItemCount:</em> which Returns the length of the RecyclerView.</li>
+
+                    <li> <em>onAttachedToRecyclerView:</em> which attaches the adapter to the RecyclerView.</li>
+
+                </ul>
+            </p>
+
+            <h4>Adapter.kt</h4>
+
+            <div>
+                <pre>
+                    <code>   
+        package com.asadevelopers.blogsamples
+
+        import android.view.LayoutInflater
+        import android.view.View
+        import android.view.ViewGroup
+        import android.widget.TextView
+        import androidx.recyclerview.widget.RecyclerView
+
+        class Adapter(private val list: ArrayList&lt;String&gt;, private val onClicked: onClicked) :
+            RecyclerView.Adapter&lt;Adapter.ViewHolder&gt;() {
+
+            inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+                val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
+            }
+
+            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+                val view = LayoutInflater.from(parent.context).inflate(
+                    R.layout.recyclerview_item, parent, false
+                )
+                return ViewHolder(view)
+            }
+
+            override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+                val currentItem = list[position]
+                holder.tvTitle.text = currentItem
+
+                holder.itemView.setOnClickListener {
+                    onClicked.onClicked(currentItem)
+
+                }
+            }
+
+            override fun getItemCount(): Int = list.size
+
+        }
+
+        interface onClicked {
+            fun onClicked(currentItem: String
+        }
+                        </code>
+                    </pre>
+            </div>
+
+            <h4>MainActivity.kt</h4>
+
+            <div>
+                <pre>
+                    <code>
+        package com.asadevelopers.blogsamples
+
+        import androidx.appcompat.app.AppCompatActivity
+        import android.os.Bundle
+        import android.widget.Toast
+        import androidx.recyclerview.widget.LinearLayoutManager
+        import androidx.recyclerview.widget.RecyclerView
+
+        class MainActivity : AppCompatActivity(), onClicked {
+            override fun onCreate(savedInstanceState: Bundle?) {
+                super.onCreate(savedInstanceState)
+                setContentView(R.layout.activity_main)
+
+                val list = arrayListOf&lt;String&gt;(
+                    "HTML 5",
+                    "CSS 3",
+                    "JavaScript",
+                    "Java",
+                    "Kotlin",
+                    "C",
+                    "C++",
+                    "C#",
+                    "Python",
+                    "Ruby",
+                    "Dart",
+                    "XML",
+                    "Swift",
+                    "Scala",
+                    "Go",
+                    "PHP",
+                    "Ruby",
+                    "SQL",
+                    ".NET",
+                    "Pascal"
+                )
+
+                val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
+                recyclerView.layoutManager = LinearLayoutManager(this)
+                recyclerView.adapter = Adapter(list, this)
+
+
+            }
+
+            override fun onClicked(currentItem: String) {
+
+                Toast.makeText(this, "You clicked $currentItem", Toast.LENGTH_SHORT).show()
+            }
+        }
+                    </code>
+                </pre>
+            </div>
+
+        </div>
+
+        <div>
+            <h4>Output:</h4>
+
+            <video width="150" height="200">
+                <source src="https://firebasestorage.googleapis.com/v0/b/android-projects-and-qui-c56c0.appspot.com/o/Learn%2FRecycler%20View%2Frecycler_view_screenRecording.mp4?alt=media&token=5663245e-2da5-4ce0-be75-6ed422ced595" type="video/mp4">
+                Your browser does not support video tag.
+            </video>
+
+            <p>Keep in mind, that the drawable mentioned in the XML layouts have to be added to the drawable folder
+                under res of the Android Studio Project and support package v7 should be added as an implementation in
+                the Gradle file of the project for the code to run. The above code uses ScrollView as a parent to
+                RecyclerView and disables the scrolling of the RecyclerView hence making the whole page scroll instead
+                of just the RecyclerView contents.</p>
+
+        </div>
+
+    </section>
+
+</body>
+
+</html>
